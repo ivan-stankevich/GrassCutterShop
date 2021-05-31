@@ -44,6 +44,7 @@
                         &nbsp;&nbsp;&nbsp;&nbsp <a href="/user/detailOrder?productId=<c:out value='${order.productId}' />"><fmt:message key="page.detail.detail.info"/></a></td>
                 </tr>
             </c:forEach>
+            <div>Total cost: <c:out value="${totalCost}"/></div>
             </tbody>
         </table>
     </div>

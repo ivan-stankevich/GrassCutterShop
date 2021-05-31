@@ -19,10 +19,12 @@
     <div class="container">
         <h3 class="text-center"><fmt:message key="product.list.of.grass.cutters"/></h3>
         <hr>
+        <c:if test="${sessionScope.user.role.ordinal() == 1}">
         <div class="container text-left">
             <a href="<%=request.getContextPath()%>/admin/newProduct"
                class="btn btn-success"><fmt:message key="product.add.new.grass.cutter"/></a>
         </div>
+        </c:if>
         <br>
         <table class="table table-bordered">
             <thead>
@@ -38,8 +40,8 @@
             <tbody>
             <c:forEach var="grassCutter" items="${listOfProducts}">
                 <tr>
-                <td><c:out value="${grassCutter.title}" /></td>
-                <td><c:out value="${grassCutter.manufacturer}" /></td>
+                <td > <c:out value="${grassCutter.title}" /></td>
+                <td ><c:out value="${grassCutter.manufacturer}" /></td>
                 <td><c:out value="${grassCutter.type}" /></td>
                 <td><c:out value="${grassCutter.engine}" /></td>
                 <td><c:out value="${grassCutter.price}" /></td>

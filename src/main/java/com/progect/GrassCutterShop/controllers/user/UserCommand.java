@@ -9,6 +9,7 @@ import com.progect.GrassCutterShop.exception.ServiceException;
 import com.progect.GrassCutterShop.service.OrderService;
 import com.progect.GrassCutterShop.service.ProductService;
 import com.progect.GrassCutterShop.service.UserService;
+import com.progect.GrassCutterShop.util.PasswordEncoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -32,11 +33,17 @@ public class UserCommand {
     public static void userOrders(HttpServletRequest request, HttpServletResponse response) throws ServiceException, ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
         List <Order> orderList = OrderService.getInstance().getOrderListByUserId(user.getUserId());
+        long totalCost = 0;
+        for (Order order : orderList){
+            totalCost += Long.valueOf(String.valueOf(order.getOrderCost()));
+        }
+        request.setAttribute("totalCost", totalCost);
         request.setAttribute("orderList", orderList);
         request.getServletContext().getRequestDispatcher("/WEB-INF/jsp/user/orderList.jsp").forward(request, response);
     }
     public static void editUserByUserPage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User) request.getSession().getAttribute("user");
+
         request.setAttribute("updateUser", user);
         request.getServletContext().getRequestDispatcher("/WEB-INF/jsp/user/editUser.jsp").forward(request, response);
     }
@@ -71,7 +78,7 @@ public class UserCommand {
                 .firstName(request.getParameter("firstName"))
                 .lastName(request.getParameter("lastName"))
                 .login(request.getParameter("login"))
-                .password(request.getParameter("password"))
+                .password(PasswordEncoder.encodePassword(request.getParameter("password")))
                 .role(UserRole.valueOf(request.getParameter("role")))
                 .build();
     }

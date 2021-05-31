@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdminCommand {
@@ -78,7 +79,13 @@ public class AdminCommand {
 
     public static void allOrdersSubmit(HttpServletRequest request, HttpServletResponse response) throws ServiceException, ServletException, IOException {
         List <Order> orderList = OrderService.getInstance().getAllOrders();
+        long totalCost = 0;
+        for (Order order : orderList){
+            totalCost += Long.valueOf(String.valueOf(order.getOrderCost()));
+
+        }
         request.setAttribute("orderList", orderList);
+        request.setAttribute("totalCost", totalCost);
         request.getServletContext().getRequestDispatcher("/WEB-INF/jsp/user/orderList.jsp").forward(request, response);
     }
 
@@ -115,7 +122,7 @@ public class AdminCommand {
                 .firstName(request.getParameter("firstName"))
                 .lastName(request.getParameter("lastName"))
                 .login(request.getParameter("login"))
-                .password(request.getParameter("password"))
+                .password(PasswordEncoder.encodePassword(request.getParameter("password")))
                 .role(UserRole.valueOf(request.getParameter("role")))
                 .build();
     }

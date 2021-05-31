@@ -25,7 +25,7 @@
             </c:if>
             <c:if test="${sessionScope.user.role.ordinal() == 1}">
             <form action="<%=request.getContextPath()%>/admin/editUser/submit" method="post">
-                <a class="navbar-brand"><fmt:message key="page.usersList.add.new.user"/> </a>
+                <a class="navbar-brand"><fmt:message key="page.usersList.edit"/> </a>
                 </c:if>
                 <input type="hidden" name="id" value="<c:out value='${updateUser.userId}' />" />
                 <div class="form-group">
@@ -57,12 +57,12 @@
                 </select></p>
                 </c:if>
                 <c:if test="${sessionScope.user.role.ordinal() == 0}">
+                <input type="hidden" name="role" value="USER_ROLE">
+                </c:if>
                 <button type="submit" class="btn btn-primary"><fmt:message key="page.usersList.edit"/></button>
-                </c:if>
-                <c:if test="${sessionScope.user.role.ordinal() == 1}">
-                    <button type="submit" class="btn btn-primary"><fmt:message key="page.usersList.add.new.user"/></button>
-                </c:if>
             </form>
+        </form>
+    </div>
     </div>
 </div>
 </body>

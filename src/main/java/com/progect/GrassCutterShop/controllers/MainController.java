@@ -28,17 +28,18 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
-@SuppressWarnings("Duplicates")
+//@SuppressWarnings("Duplicates")
 @WebServlet("/")
 public class MainController extends HttpServlet {
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         doGet(request, response);
     }
 
-    @SneakyThrows
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String action = request.getServletPath();
+        try{
             switch (action) {
                 case "/login":
                     BasicCommand.userLoginPage(request, response);
@@ -115,5 +116,9 @@ public class MainController extends HttpServlet {
                     BasicCommand.userLoginPage(request, response);
                     break;
             }
+        }catch (Exception e) {
+            request.setAttribute("ex", e.getMessage());
+            request.getRequestDispatcher("/WEB-INF/error.jsp").forward(request,response);
+        }
     }
 }
